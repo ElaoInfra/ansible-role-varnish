@@ -1,0 +1,16 @@
+---
+
+elao_varnish_config_template: ~
+elao_varnish_config: ~
+
+elao_varnish_config_ncsa_template: ~
+elao_varnish_config_ncsa: ~
+
+elao_varnish_vcls:
+  - name: default.vcl
+    template: default.vcl.j2
+    backends:
+      - name: default
+        address: 127.0.0.1
+        port: 80
+

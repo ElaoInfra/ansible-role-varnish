@@ -1,0 +1,26 @@
+---
+
+- name: vcls > Ensure directories exist.
+  file:
+    path: "/etc/varnish/{{ item.name|dirname }}"
+    state: directory
+    recurse: yes
+    owner: root
+    group: root
+    mode: 0755
+  when: item.name|dirname
+  with_items: elao_varnish_vcls
+
+- name: vcls > Create vcls files.
+  template:
+    src: "{{ item.template }}"
+    dest: "/etc/varnish/{{ item.name }}"
+  with_items: elao_varnish_vcls
+  register: _elao_varnish_vcls_output
+  notify:
+    - varnish restart
+
+- name: vcls > Check vcls.
+  command: "varnishd -C -f {{ elao_varnish_config.vcl_filepath|default('/etc/varnish/default.vcl') }}"
+  when: _elao_varnish_vcls_output.changed
+  always_run: yes

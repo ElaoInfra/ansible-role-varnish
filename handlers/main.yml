@@ -1,0 +1,12 @@
+---
+
+- name: varnish restart
+  service:
+    name: varnish
+    state: restarted
+
+- name: varnishncsa restart
+  service:
+    name: varnishncsa
+    state: "{{ 'restarted' if elao_varnish_config_ncsa.enabled|default(false) else 'stopped' }}"
+

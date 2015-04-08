@@ -1,0 +1,27 @@
+---
+
+- name: services > Start varnish if not running.
+  service:
+    name:    "{{ item }}"
+    state:   started
+    enabled: yes
+  with_items:
+    - varnish
+
+- name: services > Start varnishncsa if not running and enable.
+  service:
+    name:    "{{ item }}"
+    state:   started
+    enabled: yes
+  when: elao_varnish_config_ncsa.enabled|default(false)
+  with_items:
+  - varnishncsa
+
+- name: services > Stop varnishncsa if running and disable.
+  service:
+    name:    "{{ item }}"
+    state:   stopped
+    enabled: no
+  when: not elao_varnish_config_ncsa.enabled|default(false)
+  with_items:
+  - varnishncsa

@@ -1,0 +1,18 @@
+---
+
+- name: config > Varnish daemon configuration.
+  template:
+    src: "{{ elao_varnish_config_template if elao_varnish_config_template is not none else 'config/default.j2' }}"
+    dest: /etc/default/varnish
+  notify:
+    - varnish restart
+
+- debug:
+    msg: "{{ elao_varnish_config_ncsa }}"
+
+- name: config > Varnish ncsa (logging) configuration.
+  template:
+    src: "{{ elao_varnish_config_ncsa_template if elao_varnish_config_ncsa_template is not none else 'config/varnishncsa.j2' }}"
+    dest: /etc/default/varnishncsa
+  notify:
+    - varnishncsa restart

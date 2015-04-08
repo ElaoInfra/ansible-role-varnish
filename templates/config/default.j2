@@ -1,0 +1,14 @@
+START=yes
+
+NFILES=131072
+MEMLOCK=82000
+
+DAEMON_OPTS="-a {{ elao_varnish_config.listen_address|default('127.0.0.1') }}:{{ elao_varnish_config.listen_port|default(80) }} \
+             -f {{ elao_varnish_config.vcl_filepath|default('/etc/varnish/default.vcl') }} \
+             -T {{ elao_varnish_config.admin_listen_address|default('127.0.0.1') }}:{{ elao_varnish_config.admin_listen_port|default(6082) }} \
+             -t {{ elao_varnish_config.ttl|default(120) }} \
+             -S {{ elao_varnish_config.secret_filepath|default('/etc/varnish/secret') }} \
+{% if elao_varnish_config.instance is defined %}
+             -i {{ elao_varnish_config.instance }} \
+{% endif %}
+             -s {{ elao_varnish_config.storage|default('malloc,256m') }}"
