@@ -15,7 +15,7 @@ vcl 4.0;
 {% for backend in item.backends %}
 backend {{ backend.name }} {
     .host = "{{ backend.address }}";
-    .port = "{{ backend.port }}";
+    .port = "{{ backend.port }}";
 }
 {% endfor %}
 
